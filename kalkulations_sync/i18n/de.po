@@ -1,0 +1,580 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* kalkulations_sync
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e-20260603\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-30 05:41+0000\n"
+"PO-Revision-Date: 2026-06-30 05:41+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid ", %(n)d newly created"
+msgstr ", %(n)d neu angelegt"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid ""
+"<span class=\"text-muted small\" invisible=\"count_changed != 0 or count_errors != 0 or count_new != 0 or count_missing != 0\">\n"
+"                        No changes\n"
+"                    </span>"
+msgstr "<span class=\"text-muted small\" invisible=\"count_changed != 0 or count_errors != 0 or count_new != 0 or count_missing != 0\">\n                        Keine Änderungen\n                    </span>"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid ""
+"<strong>Note:</strong>\n"
+"                    The Excel file must have been saved with Microsoft Excel after\n"
+"                    the calculation. Without this save step, formula cells return\n"
+"                    no values."
+msgstr "<strong>Hinweis:</strong>\n                    Die Excel-Datei muss nach der Berechnung mit Microsoft Excel\n                    gespeichert worden sein. Ohne diesen Speicherschritt liefern\n                    Formelzellen keine Werte."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+msgid "Calculation exported by %(user)s (%(file)s)."
+msgstr "Kalkulation exportiert von %(user)s (%(file)s)."
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_company__amf_kalksync_template
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_config_settings__amf_kalksync_template
+msgid "Calculation template (.xlsx)"
+msgstr "Kalkulationstemplate (.xlsx)"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields.selection,name:kalkulations_sync.selection__kalksync_import_wizard_line__status__changed
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid "Changed"
+msgstr "Geändert"
+
+#. module: kalkulations_sync
+#: model:ir.model,name:kalkulations_sync.model_res_company
+msgid "Companies"
+msgstr "Unternehmen"
+
+#. module: kalkulations_sync
+#: model:ir.model,name:kalkulations_sync.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfigurationseinstellungen"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__count_changed
+msgid "Count Changed"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__count_errors
+msgid "Count Errors"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__count_missing
+msgid "Count Missing"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__count_new
+msgid "Count New"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__create_uid
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__create_date
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_company__amf_kalksync_default_product_id
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_config_settings__amf_kalksync_default_product_id
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.res_config_settings_view_form_kalksync
+msgid "Default product for new lines"
+msgstr "Standard-Produkt für neue Positionen"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__value_diff
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_line_list
+msgid "Difference"
+msgstr "Differenz"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__display_name
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__display_name
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_company__display_name
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:kalkulations_sync.field_sale_order__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+#: model:ir.model.fields.selection,name:kalkulations_sync.selection__kalksync_import_wizard_line__status__error
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_line_list
+msgid "Error"
+msgstr "Fehler"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__error_message
+msgid "Error message"
+msgstr "Fehlermeldung"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid "Errors"
+msgstr "Fehler"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_line_list
+msgid "Excel"
+msgstr "Excel"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__file_data
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid "Excel file (.xlsx)"
+msgstr "Excel-Datei (.xlsx)"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.res_config_settings_view_form_kalksync
+msgid "Excel template"
+msgstr "Excel-Template"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__value_new
+msgid "Excel value"
+msgstr "Excel-Wert"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_sale_order_form_kalksync
+msgid "Export Calculation"
+msgstr "Kalkulation exportieren"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+msgid "Export is only possible in state 'Quotation' or 'Quotation Sent'."
+msgstr "Export ist nur im Status 'Angebot' oder 'Angebot gesendet' möglich."
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__export_datetime
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid "Export timestamp"
+msgstr "Exportzeitpunkt"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,help:kalkulations_sync.field_res_company__amf_kalksync_default_product_id
+#: model:ir.model.fields,help:kalkulations_sync.field_res_config_settings__amf_kalksync_default_product_id
+msgid ""
+"Fallback product used when a new line without a product reference is created"
+" via \"N\" or a row copy."
+msgstr "Fallback-Produkt, das verwendet wird, wenn per \"N\" oder Zeilen-Kopie eine neue Position ohne Produktbezug angelegt wird."
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__field_label
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_line_list
+msgid "Field"
+msgstr "Feld"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__field_name
+msgid "Field name"
+msgstr "Feldname"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__file_name
+msgid "File Name"
+msgstr ""
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "File could not be opened: %s"
+msgstr "Datei konnte nicht geöffnet werden: %s"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid ""
+"Formula cell without a calculated value ('%s'). Please open the file in "
+"Microsoft Excel, save it and import again."
+msgstr "Formelzelle ohne berechneten Wert ('%s'). Bitte die Datei in Microsoft Excel öffnen, speichern und erneut importieren."
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__has_errors
+msgid "Has Errors"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__id
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__id
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_company__id
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_config_settings__id
+#: model:ir.model.fields,field_description:kalkulations_sync.field_sale_order__id
+msgid "ID"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields.selection,name:kalkulations_sync.selection__kalksync_import_wizard_line__status__ignored
+msgid "Ignored"
+msgstr "Ignoriert"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_sale_order_form_kalksync
+msgid "Import Calculation"
+msgstr "Kalkulation importieren"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Import error"
+msgstr "Import-Fehler"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Invalid value '%s' for field '%s'."
+msgstr "Ungültiger Wert '%s' für Feld '%s'."
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.res_config_settings_view_form_kalksync
+msgid "Kalkulations-Sync"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model,name:kalkulations_sync.model_kalksync_import_wizard
+msgid "Kalkulations-Sync Import Wizard"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model,name:kalkulations_sync.model_kalksync_import_wizard_line
+msgid "Kalkulations-Sync Import Wizard – Line"
+msgstr "Kalkulations-Sync Import-Assistent – Position"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid ""
+"Kalkulations-Sync import: %(n)d line(s) updated%(new_part)s on %(date)s by "
+"%(user)s."
+msgstr "Kalkulations-Sync importiert: %(n)d Position(en) aktualisiert%(new_part)s am %(date)s von %(user)s."
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__write_uid
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__write_date
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_line_list
+msgid "Line"
+msgstr "Position"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Line '%s' is not present in the Excel file."
+msgstr "Position '%s' ist im Excel nicht vorhanden."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Line '%s' was modified in Odoo after the export."
+msgstr "Position '%s' wurde seit dem Export in Odoo geändert."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Line ID"
+msgstr "Positions-ID"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Line ID %d is not present in the quotation."
+msgstr "Positions-ID %d ist im Angebot nicht vorhanden."
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__line_ids
+msgid "Lines"
+msgstr "Positionen"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Metadata could not be read: %s"
+msgstr "Metadaten konnten nicht gelesen werden: %s"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields.selection,name:kalkulations_sync.selection__kalksync_import_wizard_line__status__missing
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid "Missing"
+msgstr "Fehlend"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Missing line"
+msgstr "Fehlende Position"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields.selection,name:kalkulations_sync.selection__kalksync_import_wizard_line__status__new
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid "New"
+msgstr "Neu"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "New line"
+msgstr "Neue Position"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid ""
+"New line '%(name)s' cannot be created: no product assigned and no default product configured.\n"
+"Tip: set a default product under Settings → Sales → Kalkulations-Sync."
+msgstr "Neue Position '%(name)s' kann nicht angelegt werden: kein Produkt zugeordnet und kein Standard-Produkt konfiguriert.\nTipp: Standard-Produkt unter Einstellungen → Verkauf → Kalkulations-Sync hinterlegen."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "New line (copy)"
+msgstr "Neue Position (Kopie)"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "New line (from calculation)"
+msgstr "Neue Position (aus Kalkulation)"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "No"
+msgstr "Nein"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+msgid ""
+"No calculation template configured. Please set a template under Settings → "
+"Sales."
+msgstr "Kein Kalkulationstemplate konfiguriert. Bitte unter Einstellungen → Verkauf ein Template hinterlegen."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+msgid "No order lines available."
+msgstr "Keine Auftragspositionen vorhanden."
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_line_list
+msgid "Odoo"
+msgstr "Odoo"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__value_old
+msgid "Odoo value"
+msgstr "Odoo-Wert"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__order_line_id
+msgid "Order line"
+msgstr "Auftragsposition"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__parse_warning
+msgid "Parse Warning"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__sequence
+msgid "Pos."
+msgstr "Pos."
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__sale_order_id
+msgid "Sale Order"
+msgstr ""
+
+#. module: kalkulations_sync
+#: model:ir.model,name:kalkulations_sync.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Section"
+msgstr "Abschnitt"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard__show_only_changes
+msgid "Show only changes"
+msgstr "Nur Änderungen anzeigen"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__status
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_line_list
+msgid "Status"
+msgstr "Status"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+msgid "Template could not be read: %s"
+msgstr "Template konnte nicht gelesen werden: %s"
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_company__amf_kalksync_template_name
+#: model:ir.model.fields,field_description:kalkulations_sync.field_res_config_settings__amf_kalksync_template_name
+msgid "Template file name"
+msgstr "Template-Dateiname"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.res_config_settings_view_form_kalksync
+msgid "Template for the calculation export (must contain {{line.id}})."
+msgstr "Vorlage für den Kalkulations-Export (muss {{line.id}} enthalten)."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "The line ID was modified. This row cannot be imported."
+msgstr "Die Positions-ID wurde verändert. Diese Zeile kann nicht importiert werden."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+msgid ""
+"The template does not contain a {{line.id}} placeholder. Please check the "
+"template and upload it again."
+msgstr "Das Template enthält keinen {{line.id}}-Platzhalter. Bitte das Template prüfen und erneut hochladen."
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.view_kalksync_import_wizard_form
+msgid ""
+"There are rows with errors. Please review them and, if needed,\n"
+"                    correct the original Excel file."
+msgstr "Es gibt fehlerhafte Zeilen. Bitte prüfen und ggf. die\n                    Original-Excel-Datei korrigieren."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid ""
+"There are still rows with errors. Please correct the Excel file and upload "
+"it again."
+msgstr "Es gibt noch fehlerhafte Zeilen. Bitte die Excel-Datei korrigieren und erneut hochladen."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid ""
+"This file was exported for quotation ID %(file_id)d, not for the current "
+"quotation (ID %(curr_id)d)."
+msgstr "Diese Datei wurde für Angebot ID %(file_id)d exportiert, nicht für das aktuelle Angebot (ID %(curr_id)d)."
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid ""
+"This file was not exported with Kalkulations-Sync (missing 'kalksync_meta' "
+"sheet)."
+msgstr "Diese Datei wurde nicht mit Kalkulations-Sync exportiert (fehlender 'kalksync_meta'-Sheet)."
+
+#. module: kalkulations_sync
+#: model:ir.model.fields.selection,name:kalkulations_sync.selection__kalksync_import_wizard_line__status__unchanged
+msgid "Unchanged"
+msgstr "Unverändert"
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Unknown line"
+msgstr "Unbekannte Position"
+
+#. module: kalkulations_sync
+#: model_terms:ir.ui.view,arch_db:kalkulations_sync.res_config_settings_view_form_kalksync
+msgid ""
+"Used when a new line without a product reference is created via 'N' or a row"
+" copy."
+msgstr "Wird verwendet, wenn per 'N' oder Zeilen-Kopie eine neue Position ohne Produktbezug angelegt wird."
+
+#. module: kalkulations_sync
+#: model:ir.model.fields,field_description:kalkulations_sync.field_kalksync_import_wizard_line__wizard_id
+msgid "Wizard"
+msgstr ""
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Yes"
+msgstr "Ja"
+
+#. module: kalkulations_sync
+#: model:ir.actions.server,name:kalkulations_sync.action_import_kalkulation_server
+msgid "⬆ Import Calculation"
+msgstr "⬆ Kalkulation importieren"
+
+#. module: kalkulations_sync
+#: model:ir.actions.server,name:kalkulations_sync.action_export_kalkulation_server
+msgid "⬇ Export Calculation"
+msgstr "⬇ Kalkulation exportieren"
+
+#. module: kalkulations_sync
+#. Field labels resolved at runtime via _(_FIELD_LABELS[...]) in wizard/import_wizard.py
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Quantity"
+msgstr "Menge"
+
+#. module: kalkulations_sync
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Unit Price"
+msgstr "Preis je Einheit"
+
+#. module: kalkulations_sync
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Unit Cost"
+msgstr "Kosten je Einheit"
+
+#. module: kalkulations_sync
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid "Description"
+msgstr "Bezeichnung"

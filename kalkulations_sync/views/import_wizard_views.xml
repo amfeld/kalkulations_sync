@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Sub-view for wizard lines (separate record so Odoo resolves the comodel) -->
+    <record id="view_kalksync_import_wizard_line_list" model="ir.ui.view">
+        <field name="name">kalksync.import.wizard.line.list</field>
+        <field name="model">kalksync.import.wizard.line</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="status == 'error'"
+                  decoration-warning="status == 'missing'"
+                  decoration-success="status == 'new'"
+                  decoration-muted="status in ('ignored', 'unchanged')">
+                <field name="order_line_id" string="Line" optional="show"/>
+                <field name="field_label" string="Field"/>
+                <field name="value_old" string="Odoo" readonly="1"/>
+                <field name="value_new" string="Excel" readonly="1"/>
+                <field name="value_diff" string="Difference" readonly="1" digits="[16,4]"/>
+                <field name="status" string="Status" optional="show"/>
+                <field name="error_message" string="Error" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_kalksync_import_wizard_form" model="ir.ui.view">
+        <field name="name">kalksync.import.wizard.form</field>
+        <field name="model">kalksync.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Calculation">
+
+                <!-- Permanent info banner -->
+                <div class="alert alert-info" role="alert">
+                    <strong>Note:</strong>
+                    The Excel file must have been saved with Microsoft Excel after
+                    the calculation. Without this save step, formula cells return
+                    no values.
+                </div>
+
+                <!-- Concurrency / parse warning -->
+                <div class="alert alert-warning" role="alert"
+                     invisible="not parse_warning">
+                    <field name="parse_warning" readonly="1"/>
+                </div>
+
+                <!-- Error banner -->
+                <div class="alert alert-danger" role="alert"
+                     invisible="not has_errors">
+                    There are rows with errors. Please review them and, if needed,
+                    correct the original Excel file.
+                </div>
+
+                <group>
+                    <field name="sale_order_id" invisible="1"/>
+                    <field name="has_errors" invisible="1"/>
+                    <field name="count_changed" invisible="1"/>
+                    <field name="count_errors" invisible="1"/>
+                    <field name="count_new" invisible="1"/>
+                    <field name="count_missing" invisible="1"/>
+                    <field name="file_data"
+                           filename="file_name"
+                           string="Excel file (.xlsx)"
+                           widget="binary"/>
+                    <field name="file_name" invisible="1"/>
+                    <field name="export_datetime"
+                           string="Export timestamp"
+                           readonly="1"
+                           invisible="not export_datetime"/>
+                    <field name="show_only_changes"
+                           invisible="not file_data"/>
+                </group>
+
+                <!-- Zusammenfassung nach Hochladen -->
+                <div class="d-flex gap-3 mb-2 flex-wrap" invisible="not file_data">
+                    <span class="badge text-bg-danger"
+                          invisible="count_errors == 0">
+                        <field name="count_errors" readonly="1" nolabel="1"/> Errors
+                    </span>
+                    <span class="badge text-bg-warning"
+                          invisible="count_missing == 0">
+                        <field name="count_missing" readonly="1" nolabel="1"/> Missing
+                    </span>
+                    <span class="badge text-bg-success"
+                          invisible="count_new == 0">
+                        <field name="count_new" readonly="1" nolabel="1"/> New
+                    </span>
+                    <span class="badge text-bg-primary"
+                          invisible="count_changed == 0">
+                        <field name="count_changed" readonly="1" nolabel="1"/> Changed
+                    </span>
+                    <span class="text-muted small"
+                          invisible="count_changed != 0 or count_errors != 0 or count_new != 0 or count_missing != 0">
+                        No changes
+                    </span>
+                </div>
+
+                <!-- Comparison table -->
+                <field name="line_ids"
+                       invisible="not file_data"
+                       nolabel="1"
+                       widget="one2many"
+                       mode="list"/>
+
+                <footer>
+                    <button name="action_confirm"
+                            type="object"
+                            string="Confirm"
+                            class="btn-primary"
+                            icon="fa-check"
+                            invisible="has_errors or not file_data"/>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

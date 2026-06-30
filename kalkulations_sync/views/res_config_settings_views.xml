@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_kalksync" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.kalksync</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='sale_management']" position="inside">
+                <block title="Kalkulations-Sync" name="kalksync_setting_container">
+                    <setting string="Excel template"
+                             help="Template for the calculation export (must contain {{line.id}}).">
+                        <field name="amf_kalksync_template"
+                               filename="amf_kalksync_template_name"
+                               widget="binary"/>
+                        <field name="amf_kalksync_template_name" invisible="1"/>
+                    </setting>
+                    <setting string="Default product for new lines"
+                             help="Used when a new line without a product reference is created via 'N' or a row copy.">
+                        <field name="amf_kalksync_default_product_id"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

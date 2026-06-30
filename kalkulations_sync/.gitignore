@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+.idea/
+.vscode/
+*.log
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.coverage
+htmlcov/
+# Local review/debug dumps — never ship in the module tree
+*_review.html
+# Internal development notes — not part of the public module
+CLAUDE.md

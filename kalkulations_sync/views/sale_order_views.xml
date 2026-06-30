@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dedizierte Buttons im SO-Formular (sichtbar nur in draft/sent) -->
+    <record id="view_sale_order_form_kalksync" model="ir.ui.view">
+        <field name="name">sale.order.form.kalksync</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/field[@name='state']" position="before">
+                <button name="action_export_kalkulation"
+                        type="object"
+                        string="Export Calculation"
+                        icon="fa-download"
+                        invisible="state not in ('draft', 'sent')"
+                        groups="sales_team.group_sale_salesman"/>
+                <button name="action_import_kalkulation"
+                        type="object"
+                        string="Import Calculation"
+                        icon="fa-upload"
+                        invisible="state not in ('draft', 'sent')"
+                        groups="sales_team.group_sale_salesman"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Kalkulation exportieren → Zahnrad-Menü im Formular (Einzeldatensatz) -->
+    <record id="action_export_kalkulation_server" model="ir.actions.server">
+        <field name="name">⬇ Export Calculation</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">action = record.action_export_kalkulation()</field>
+    </record>
+
+    <!-- Kalkulation importieren → Zahnrad-Menü im Formular (Einzeldatensatz) -->
+    <record id="action_import_kalkulation_server" model="ir.actions.server">
+        <field name="name">⬆ Import Calculation</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">action = record.action_import_kalkulation()</field>
+    </record>
+</odoo>
