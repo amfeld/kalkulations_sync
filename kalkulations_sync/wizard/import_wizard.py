@@ -3,10 +3,12 @@ import io
 import json
 
 import openpyxl
+from markupsafe import Markup
 from openpyxl.utils import column_index_from_string
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.misc import formatLang
 
 from ..utils import _is_importable_field
 
@@ -394,6 +396,52 @@ class KalkSyncImportWizard(models.TransientModel):
                         'error_message': '',
                         '_raw_value': excel_bool,
                     })
+                elif f_type == 'selection':
+                    # Selection keys differ between instances/versions, so an
+                    # unvalidated write would raise ValueError at confirm time
+                    # and roll back ALL changes. Accept the technical key or
+                    # the (translated) label, map to the key, and turn invalid
+                    # values into a per-row error instead.
+                    if excel_raw is None or str(excel_raw).strip() == '':
+                        # Blank cell → no change intended (like blank numbers)
+                        continue
+                    sel_pairs = f._description_selection(self.env)
+                    label_by_key = dict(sel_pairs)
+                    excel_key = self._selection_key(f, excel_raw)
+                    odoo_key = odoo_val or ''
+                    if excel_key is None:
+                        wizard_lines.append(self._make_error_line(
+                            order_line_id=so_line.id,
+                            sequence=so_line.sequence,
+                            field_name=field_name,
+                            label=label,
+                            value_old=label_by_key.get(odoo_key, ''),
+                            value_new=str(excel_raw),
+                            message=_(
+                                "Invalid value '%(val)s' for field '%(field)s'. "
+                                "Allowed values: %(allowed)s"
+                            ) % {
+                                'val': excel_raw,
+                                'field': label,
+                                'allowed': ', '.join(
+                                    str(lbl) for _k, lbl in sel_pairs
+                                ),
+                            },
+                        ))
+                        continue
+                    status = 'unchanged' if excel_key == odoo_key else 'changed'
+                    wizard_lines.append({
+                        'order_line_id': so_line.id,
+                        'sequence': so_line.sequence,
+                        'field_name': field_name,
+                        'field_label': label,
+                        'value_old': label_by_key.get(odoo_key, ''),
+                        'value_new': label_by_key.get(excel_key, excel_key),
+                        'value_diff': 0.0,
+                        'status': status,
+                        'error_message': '',
+                        '_raw_value': excel_key,
+                    })
                 else:  # char, text, html
                     excel_str = str(excel_raw) if excel_raw is not None else ''
                     odoo_str = str(odoo_val) if odoo_val else ''
@@ -483,8 +531,10 @@ class KalkSyncImportWizard(models.TransientModel):
         # Each line needs potentially different values, so individual writes are
         # unavoidable here — grouping by identical vals would yield no benefit
         # for typical pricing/quantity changes across distinct positions.
+        # kalksync_import unterdrückt die per-Feld-Chatter-Notizen aus sale_wpr;
+        # die Änderungen werden weiter unten in eine Nachricht zusammengefasst.
         for ol, vals in changes_by_line.items():
-            ol.write(vals)
+            ol.with_context(kalksync_import=True).write(vals)
 
         n_updated = len(changes_by_line)
 
@@ -520,11 +570,14 @@ class KalkSyncImportWizard(models.TransientModel):
                 })
                 new_count += 1
 
-        # Attach original file to chatter
+        now = fields.Datetime.now()
+
+        # Attach original file to chatter, prefixed with U<JJMMTT>_ so the upload
+        # is easy to spot in the attachments list.
         attachment_ids = []
         if self.file_data and self.file_name:
             att = self.env['ir.attachment'].create({
-                'name': self.file_name,
+                'name': 'U%s_%s' % (now.strftime('%y%m%d'), self.file_name),
                 'type': 'binary',
                 'datas': self.file_data,
                 'res_model': 'sale.order',
@@ -537,27 +590,85 @@ class KalkSyncImportWizard(models.TransientModel):
             attachment_ids = [att.id]
 
         new_part = (_(", %(n)d newly created") % {'n': new_count}) if new_count else ''
+        body = _(
+            "Kalkulations-Sync import: %(n)d line(s) updated"
+            "%(new_part)s on %(date)s by %(user)s."
+        ) % {
+            'n': n_updated,
+            'new_part': new_part,
+            'date': now.strftime('%d.%m.%Y %H:%M'),
+            'user': self.env.user.name,
+        }
+
+        # Fold the individual field changes into the same message instead of
+        # letting each become its own chatter note (see sale_wpr write override).
+        # message_post escapes plain str bodies, so the HTML must be a Markup.
+        html_body = Markup('<p>%s</p>') % body
+        detail = self._format_change_details(line_vals, so_lines_by_id)
+        if detail:
+            html_body += detail
+
         self.sale_order_id.message_post(
-            body=_(
-                "Kalkulations-Sync import: %(n)d line(s) updated"
-                "%(new_part)s on %(date)s by %(user)s."
-            ) % {
-                'n': n_updated,
-                'new_part': new_part,
-                'date': fields.Datetime.now().strftime('%d.%m.%Y %H:%M'),
-                'user': self.env.user.name,
-            },
-            attachment_ids=attachment_ids,
+            body=html_body, attachment_ids=attachment_ids,
         )
 
         return {'type': 'ir.actions.act_window_close'}
+
+    def _format_change_details(self, line_vals, so_lines_by_id):
+        """Render the changed fields grouped per order line as one HTML block.
+
+        Returns a Markup so message_post keeps the HTML intact; all
+        interpolated values are escaped by markupsafe.
+        """
+        currency = self.sale_order_id.currency_id
+        line_fields = self.env['sale.order.line']._fields
+
+        def _fmt(f, s):
+            if f and f.type in ('float', 'monetary'):
+                try:
+                    return formatLang(self.env, float(s), currency_obj=currency)
+                except (ValueError, TypeError):
+                    return s
+            return s
+
+        grouped = {}  # so_line -> [(field label, old, new)]
+        for v in line_vals:
+            if v.get('status') != 'changed':
+                continue
+            so_line = so_lines_by_id.get(v.get('order_line_id'))
+            if not so_line:
+                continue
+            f = line_fields.get(v.get('field_name'))
+            grouped.setdefault(so_line, []).append((
+                v.get('field_label') or v.get('field_name'),
+                _fmt(f, v.get('value_old') or '0'),
+                _fmt(f, v.get('value_new') or '0'),
+            ))
+
+        blocks = []
+        for so_line, changes in grouped.items():
+            # Multi-line descriptions: the first line is enough as heading.
+            title = (so_line.name or str(so_line.id)).splitlines()[0]
+            items = Markup('').join(
+                Markup(
+                    '<li>%s: <span style="color:#888888;">%s</span>'
+                    ' → <strong>%s</strong></li>'
+                ) % (label, old, new)
+                for label, old, new in changes
+            )
+            blocks.append(
+                Markup(
+                    '<p style="margin:8px 0 0 0;"><strong>%s</strong></p>'
+                    '<ul style="margin:0 0 4px 0;">%s</ul>'
+                ) % (title, items)
+            )
+        return Markup('').join(blocks)
 
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
 
-    @staticmethod
-    def _read_row_fields(row, field_col_idx, line_fields):
+    def _read_row_fields(self, row, field_col_idx, line_fields):
         """Collect importable field values from an Excel row into a dict."""
         result = {}
         for fn, col_idx in field_col_idx.items():
@@ -569,13 +680,34 @@ class KalkSyncImportWizard(models.TransientModel):
             if raw is None:
                 continue
             f = line_fields.get(fn)
-            try:
-                val = _coerce_field_value(f.type if f else 'float', raw)
-            except (ValueError, TypeError):
-                val = None
+            if f is not None and f.type == 'selection':
+                # Invalid keys would raise ValueError at create() and roll back
+                # the whole import — drop them here (blank = field not set).
+                val = self._selection_key(f, raw)
+            else:
+                try:
+                    val = _coerce_field_value(f.type if f else 'float', raw)
+                except (ValueError, TypeError):
+                    val = None
             if val is not None:
                 result[fn] = val
         return result
+
+    def _selection_key(self, f, raw):
+        """Map an Excel cell value to a valid selection key.
+
+        Accepts the technical key or the translated label, case-insensitive.
+        Returns None if the value matches neither.
+        """
+        s = str(raw).strip()
+        sel_pairs = f._description_selection(self.env)
+        if s in {key for key, _lbl in sel_pairs}:
+            return s
+        lower = s.lower()
+        for key, lbl in sel_pairs:
+            if str(lbl).strip().lower() == lower:
+                return key
+        return None
 
     @staticmethod
     def _fmt_num(val):

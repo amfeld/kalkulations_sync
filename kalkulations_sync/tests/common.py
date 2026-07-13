@@ -7,10 +7,11 @@ from odoo.tests.common import TransactionCase
 
 
 def _make_template_xlsx(include_line_id=True, extra_formula=False):
-    """Build a minimal .xlsx template using the placeholder mechanism.
+    """Build a minimal .xlsx template.
 
-    Column F uses {{line.name}} directly in the master row (Variante B).
-    Use _make_template_marker_xlsx() to test the [marker] mechanism (Variante A).
+    {{line.field}} placeholders in the master row are export-only (display).
+    Import columns are declared via [marker] headers in row 2 — here for
+    qty, price and name, so the standard import tests can patch those columns.
     Returns base64-encoded bytes.
     """
     wb = openpyxl.Workbook()
@@ -23,15 +24,15 @@ def _make_template_xlsx(include_line_id=True, extra_formula=False):
     ws['C1'] = 'Kunde:'
     ws['D1'] = '{{object.partner_id.name}}'
 
-    # Column headers (row 2)
+    # Column headers (row 2) — [marker] declares the column as import source
     ws['A2'] = 'ID'
     ws['B2'] = 'Produkt'
-    ws['C2'] = 'Menge'
-    ws['D2'] = 'VK-Preis'
+    ws['C2'] = 'Menge [product_uom_qty]'
+    ws['D2'] = 'VK-Preis [price_unit]'
     ws['E2'] = 'Summe'
-    ws['F2'] = 'Bezeichnung'
+    ws['F2'] = 'Bezeichnung [name]'
 
-    # Master row (row 3) — all columns use placeholder mechanism
+    # Master row (row 3) — placeholders fill values on export (display only)
     if include_line_id:
         ws['A3'] = '{{line.id}}'
     ws['B3'] = '{{line.product_id.name}}'

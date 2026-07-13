@@ -254,6 +254,30 @@ class TestImportRoundtrip(KalkSyncBaseCase):
         msg_count_before = len(self.order.message_ids)
         wizard.action_confirm()
         self.assertGreater(len(self.order.message_ids), msg_count_before)
+        # Body must arrive as real HTML, not double-escaped text.
+        body = self.order.message_ids[0].body
+        self.assertIn('<p>', body)
+        self.assertNotIn('&lt;', body)
+
+    def test_chatter_message_groups_changes_per_line(self):
+        b64 = self.order._generate_kalkulation_excel()
+        wb_check = openpyxl.load_workbook(io.BytesIO(base64.b64decode(b64)), data_only=True)
+        col_mapping = json.loads(wb_check['kalksync_meta']['B5'].value)
+        patched = _patch_exported_file(b64, self.line1.id, col_mapping['price_unit'], 99.0)
+
+        wizard = self.env['kalksync.import.wizard'].create({
+            'sale_order_id': self.order.id,
+            'file_data': patched,
+            'file_name': 'patched.xlsx',
+        })
+        wizard._onchange_file_data()
+        wizard.action_confirm()
+
+        body = self.order.message_ids[0].body
+        # Line heading (first description line, bold) + bullet list of changes
+        self.assertIn('<strong>%s</strong>' % self.line1.name.splitlines()[0], body)
+        self.assertIn('<li>', body)
+        self.assertNotIn('&lt;', body)
 
 
 class TestMissingLine(KalkSyncBaseCase):

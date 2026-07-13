@@ -1,6 +1,6 @@
 {
     'name': 'Kalkulations-Sync Excel',
-    'version': '19.0.1.2.0',
+    'version': '19.0.1.4.0',
     'category': 'Sales',
     'summary': 'Universal Excel export/import for quotation lines — any field, including custom',
     'author': 'Alex Feld',
@@ -42,7 +42,8 @@ Workflow
 Highlights
 ----------
 - Any ``sale.order.line`` field is importable (standard and custom)
-- Two template mechanics: ``{{line.field}}`` placeholders or ``[field]`` markers
+- Import columns are declared via ``[field]`` markers in a header row;
+  ``{{line.field}}`` placeholders export values (display only)
 - New positions: a row with ``N`` in the ID column creates a new order line
 - Concurrency guard: warns if a line was changed in Odoo after the export
 - Computed/relational fields are skipped automatically

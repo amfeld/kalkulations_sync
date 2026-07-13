@@ -264,6 +264,22 @@ msgid "Invalid value '%s' for field '%s'."
 msgstr ""
 
 #. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/wizard/import_wizard.py:0
+msgid ""
+"Invalid value '%(val)s' for field '%(field)s'. Allowed values: %(allowed)s"
+msgstr ""
+
+#. module: kalkulations_sync
+#. odoo-python
+#: code:addons/kalkulations_sync/models/sale_order.py:0
+msgid ""
+"Warning: the template contains no usable [field] import markers. Changed "
+"values in this file will NOT be detected on upload (only new lines marked "
+"with 'N')."
+msgstr ""
+
+#. module: kalkulations_sync
 #: model_terms:ir.ui.view,arch_db:kalkulations_sync.res_config_settings_view_form_kalksync
 msgid "Kalkulations-Sync"
 msgstr ""

@@ -6,4 +6,5 @@ from . import test_import
 from . import test_import_engine
 from . import test_counts
 from . import test_new_line_and_hook
+from . import test_selection_import
 from . import test_wizard

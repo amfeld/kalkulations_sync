@@ -1,9 +1,12 @@
 import base64
 import io
 import json
+import logging
 import re
 import zipfile
 from copy import copy
+
+from markupsafe import Markup
 
 import openpyxl
 from openpyxl.utils import get_column_letter
@@ -12,6 +15,8 @@ from odoo import _, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 from ..utils import _NON_IMPORTABLE_TYPES, _is_importable_field  # noqa: F401 (re-exported for tests)
+
+_logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -299,6 +304,32 @@ class SaleOrder(models.Model):
             ))
 
         file_content = self._generate_kalkulation_excel()
+
+        # Import mapping comes only from [field] markers. A template without
+        # any usable marker still exports fine but the upload will detect
+        # nothing — surface that now instead of at import time. Fail-open:
+        # a broken meta read must not block the export itself.
+        marker_warning = ''
+        try:
+            wb_meta = openpyxl.load_workbook(
+                io.BytesIO(base64.b64decode(file_content)), read_only=True
+            )
+            try:
+                mapping = json.loads(wb_meta['kalksync_meta']['B5'].value or '{}')
+            finally:
+                wb_meta.close()
+            if not mapping:
+                marker_warning = _(
+                    "Warning: the template contains no usable [field] import "
+                    "markers. Changed values in this file will NOT be detected "
+                    "on upload (only new lines marked with 'N')."
+                )
+        except Exception:
+            _logger.warning(
+                "kalksync: could not read back the column mapping for the "
+                "marker check on SO %s", self.id, exc_info=True,
+            )
+
         date_str = fields.Date.today().strftime('%y%m%d')
         partner_name = re.sub(r'[^\w]', '_', self.partner_id.name or '').strip('_')[:30]
         file_name = f"{date_str}_Calc_{partner_name}_{self.name}.xlsx"
@@ -314,11 +345,17 @@ class SaleOrder(models.Model):
             ),
         })
 
+        body = _("Calculation exported by %(user)s (%(file)s).") % {
+            'user': self.env.user.name,
+            'file': file_name,
+        }
+        if marker_warning:
+            # Plain-string bodies are HTML-escaped by message_post — a bare
+            # \n would collapse to a space. Markup keeps the <br/> and still
+            # escapes the interpolated strings.
+            body = Markup('%s<br/><strong>%s</strong>') % (body, marker_warning)
         self.message_post(
-            body=_("Calculation exported by %(user)s (%(file)s).") % {
-                'user': self.env.user.name,
-                'file': file_name,
-            },
+            body=body,
             attachment_ids=[attachment.id],
         )
 
@@ -391,20 +428,14 @@ class SaleOrder(models.Model):
             })
 
         # --- Build column mapping for importable fields ---
-        # Method 1: placeholder {{line.field_name}} in master row
-        # Method 2: header marker [field_name] in the row above the master row
-        #           → allows formula columns (no placeholder needed in master row)
-        _line_ph_re = re.compile(r'\{\{line\.([^}]+)\}\}')
+        # Import columns are defined EXCLUSIVELY by [field_name] / [Klarname]
+        # header markers above the master row. {{line.field}} placeholders in
+        # the master row are export-only (display) and never trigger an import
+        # — this allows templates that show the current value in one column,
+        # calculate in others, and upload the result from a marked column.
         _header_marker_re = re.compile(r'\[([^\]]+)\]')  # matches [any content]
         col_mapping = {}
         line_fields = self.env['sale.order.line']._fields
-
-        for col_idx, cd in enumerate(master_cells, start=1):
-            if not isinstance(cd['value'], str):
-                continue
-            m = _line_ph_re.search(cd['value'])
-            if m and _is_importable_field(line_fields, m.group(1)):
-                col_mapping[m.group(1)] = get_column_letter(col_idx)
 
         # Scan all rows above the master row for [Klarname] or [field_name] markers.
         # Accepts German labels ([Preis je Einheit]) and technical names ([price_unit]).

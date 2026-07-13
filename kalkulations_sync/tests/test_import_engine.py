@@ -10,7 +10,7 @@ logic and were previously unverified:
 - blank numeric cell → treated as "no change" (not as 0)
 - multiple fields on multiple lines confirmed in one go
 - legacy second-precision export timestamp still parses (concurrency branch)
-- _read_row_fields / _make_error_line static helpers
+- _read_row_fields (instance) / _make_error_line (static) helpers
 - show_only_changes toggle re-parses instead of going stale
 """
 
@@ -315,7 +315,10 @@ class TestStaticHelpers(KalkSyncBaseCase):
         line_fields = self.env['sale.order.line']._fields
         first_data_row = next(ws.iter_rows(min_row=data_row_start, values_only=False))
 
-        result = KalkSyncImportWizard._read_row_fields(
+        wiz = self.env['kalksync.import.wizard'].new({
+            'sale_order_id': self.order.id,
+        })
+        result = wiz._read_row_fields(
             first_data_row, field_col_idx, line_fields
         )
         # The export wrote line values via placeholders; the qty/price come back typed.
